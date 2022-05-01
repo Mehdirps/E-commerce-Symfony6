@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use App\Entity\Trait\CreatedAtTrait;
 use App\Repository\CouponsNameRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: CouponsNameRepository::class)]
 class CouponsName
 {
+    use CreatedAtTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -33,9 +37,6 @@ class CouponsName
     #[ORM\Column(type: 'boolean')]
     private $is_valid;
 
-    #[ORM\Column(type: 'datetime_immutable', options: ['default' => 'CURRENT_TIMESTAMP'])]
-    private $created_at;
-
     #[ORM\ManyToOne(targetEntity: CouponsTypes::class, inversedBy: 'couponsNames')]
     #[ORM\JoinColumn(nullable: false)]
     private $coupons_types;
@@ -46,6 +47,7 @@ class CouponsName
     public function __construct()
     {
         $this->orders = new ArrayCollection();
+        $this->created_at = new DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -121,18 +123,6 @@ class CouponsName
     public function setIsValid(bool $is_valid): self
     {
         $this->is_valid = $is_valid;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->created_at;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $created_at): self
-    {
-        $this->created_at = $created_at;
 
         return $this;
     }
