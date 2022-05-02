@@ -9,6 +9,8 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class CategoriesFixtures extends Fixture
 {
+    private $counter = 1;
+
     public function __construct(private SluggerInterface $slugger)
     {
     }
@@ -16,15 +18,15 @@ class CategoriesFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $parent = $this->createCategory('Informatique', null, manager: $manager);
-        
+
         $this->createCategory('Ordinateurs Portable', $parent, manager: $manager);
-        
+
         $this->createCategory('Ecran', $parent, manager: $manager);
-        
+
         $this->createCategory('Ordinateurs Fixe', $parent, manager: $manager);
-        
+
         $parent = $this->createCategory('Mode', null, manager: $manager);
-        
+
         $this->createCategory('Homme', $parent, manager: $manager);
         $this->createCategory('Femme', $parent, manager: $manager);
         $this->createCategory('Enfant', $parent, manager: $manager);
@@ -38,6 +40,9 @@ class CategoriesFixtures extends Fixture
         $category->setSlug($this->slugger->slug($category->getName())->lower());
         $category->setParent($parent);
         $manager->persist($category);
+
+        $this->addReference('cat-' . $this->counter, $category);
+        $this->counter++;
 
         return $category;
     }
