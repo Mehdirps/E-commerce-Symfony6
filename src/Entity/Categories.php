@@ -21,6 +21,9 @@ class Categories
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
+    #[ORM\Column(type: 'integer')]
+    private $categoryOrder;
+
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'categories')]
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private $parent;
@@ -122,6 +125,26 @@ class Categories
                 $product->setCategories(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * Get the value of categoryOrder
+     */ 
+    public function getCategoryOrder(): int
+    {
+        return $this->categoryOrder;
+    }
+
+    /**
+     * Set the value of categoryOrder
+     *
+     * @return  self
+     */ 
+    public function setCategoryOrder($categoryOrder)
+    {
+        $this->categoryOrder = $categoryOrder;
 
         return $this;
     }
